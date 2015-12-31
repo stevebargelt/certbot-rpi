@@ -9,11 +9,11 @@ MAINTAINER Bastien Cecchinato <bastien@kekina.to>
 EXPOSE 443
 
 # TODO: make sure --config-dir and --work-dir cannot be changed
-# through the CLI (letsencrypt-docker wrapper that uses standalone
+# through the CLI (certbot-docker wrapper that uses standalone
 # authenticator and text mode only?)
 VOLUME /etc/letsencrypt /var/lib/letsencrypt
 
-WORKDIR /opt/letsencrypt
+WORKDIR /opt/certbot
 
 # no need to mkdir anything:
 # https://docs.docker.com/reference/builder/#copy
@@ -21,8 +21,8 @@ WORKDIR /opt/letsencrypt
 # directories in its path.
 
 
-COPY letsencrypt/letsencrypt-auto-source/letsencrypt-auto /opt/letsencrypt/src/letsencrypt-auto-source/letsencrypt-auto
-RUN /opt/letsencrypt/src/letsencrypt-auto-source/letsencrypt-auto --os-packages-only && \
+COPY letsencrypt/letsencrypt-auto-source/letsencrypt-auto /opt/certbot/src/letsencrypt-auto-source/letsencrypt-auto
+RUN /opt/certbot/src/letsencrypt-auto-source/letsencrypt-auto --os-packages-only && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* \
            /tmp/* \
@@ -32,34 +32,37 @@ RUN /opt/letsencrypt/src/letsencrypt-auto-source/letsencrypt-auto --os-packages-
 # Dockerfile we make sure we cache as much as possible
 
 
-COPY letsencrypt/setup.py letsencrypt/README.rst letsencrypt/CHANGES.rst letsencrypt/MANIFEST.in /opt/letsencrypt/src/
+COPY letsencrypt/setup.py letsencrypt/README.rst letsencrypt/CHANGES.rst letsencrypt/MANIFEST.in letsencrypt/letsencrypt-auto-source/pieces/pipstrap.py /opt/certbot/src/
 
-# all above files are necessary for setup.py, however, package source
-# code directory has to be copied separately to a subdirectory...
+# all above files are necessary for setup.py and venv setup, however,
+# package source code directory has to be copied separately to a
+# subdirectory...
 # https://docs.docker.com/reference/builder/#copy: "If <src> is a
 # directory, the entire contents of the directory are copied,
 # including filesystem metadata. Note: The directory itself is not
 # copied, just its contents." Order again matters, three files are far
 # more likely to be cached than the whole project directory
 
-COPY letsencrypt/letsencrypt /opt/letsencrypt/src/letsencrypt/
-COPY letsencrypt/acme /opt/letsencrypt/src/acme/
-COPY letsencrypt/letsencrypt-apache /opt/letsencrypt/src/letsencrypt-apache/
-COPY letsencrypt/letsencrypt-nginx /opt/letsencrypt/src/letsencrypt-nginx/
+COPY letsencrypt/certbot /opt/certbot/src/certbot/
+COPY letsencrypt/acme /opt/certbot/src/acme/
+COPY letsencrypt/certbot-apache /opt/certbot/src/certbot-apache/
+COPY letsencrypt/certbot-nginx /opt/certbot/src/certbot-nginx/
 
 
-RUN virtualenv --no-site-packages -p python2 /opt/letsencrypt/venv && \
-    /opt/letsencrypt/venv/bin/pip install \
-    -e /opt/letsencrypt/src/acme \
-    -e /opt/letsencrypt/src \
-    -e /opt/letsencrypt/src/letsencrypt-apache \
-    -e /opt/letsencrypt/src/letsencrypt-nginx
+RUN virtualenv --no-site-packages -p python2 /opt/certbot/venv
+
+# PATH is set now so pipstrap upgrades the correct (v)env
+ENV PATH /opt/certbot/venv/bin:$PATH
+RUN /opt/certbot/venv/bin/python /opt/certbot/src/pipstrap.py && \
+    /opt/certbot/venv/bin/pip install \
+    -e /opt/certbot/src/acme \
+    -e /opt/certbot/src \
+    -e /opt/certbot/src/certbot-apache \
+    -e /opt/certbot/src/certbot-nginx
 
 # install in editable mode (-e) to save space: it's not possible to
-# "rm -rf /opt/letsencrypt/src" (it's stays in the underlaying image);
+# "rm -rf /opt/certbot/src" (it's stays in the underlaying image);
 # this might also help in debugging: you can "docker run --entrypoint
 # bash" and investigate, apply patches, etc.
 
-ENV PATH /opt/letsencrypt/venv/bin:$PATH
-
-ENTRYPOINT [ "letsencrypt" ]
+ENTRYPOINT [ "certbot" ]

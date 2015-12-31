@@ -1,0 +1,18 @@
+language: python
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker run --rm --privileged multiarch/qemu-user-static:register
+  - git remote add letsencrypt https://github.com/letsencrypt/letsencrypt
+  - git fetch letsencrypt master
+  - git read-tree --prefix=letsencrypt/ -u letsencrypt/master
+
+install:
+  - docker build --rm --no-cache -t bcecchinato/letsencrypt-rpi .
+  - docker push bcecchinato/letsencrypt-rpi
+
+script: true
