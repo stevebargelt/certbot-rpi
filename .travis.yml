@@ -12,7 +12,7 @@ before_install:
   - git read-tree --prefix=letsencrypt/ -u letsencrypt/master
 
 install:
-  - docker build --rm --no-cache -t bcecchinato/letsencrypt-rpi .
-  - docker push bcecchinato/letsencrypt-rpi
+  - docker build --rm --no-cache -t bcecchinato/certbot-rpi .
+  - docker push bcecchinato/certbot-rpi
 
 script: true

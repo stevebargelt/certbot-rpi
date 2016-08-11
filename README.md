@@ -22,12 +22,12 @@ The key principles behind Let’s Encrypt are:
 Run all the commands from within the project root directory.
 
 ```bash
-docker pull bcecchinato/letsencrypt-rpi
+docker pull bcecchinato/certbot-rpi
 ```
 
 ### Run the Docker Image and get the version of the installed LetsEncrypt client
 ```bash
-docker run -it --rm bcecchinato/letsencrypt-rpi --help
+docker run -it --rm bcecchinato/certbot-rpi --help
 ```
 
 ## How to use this image
