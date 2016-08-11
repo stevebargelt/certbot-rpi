@@ -10,9 +10,10 @@ before_install:
   - git remote add certbot https://github.com/certbot/certbot
   - git fetch certbot master
   - git read-tree --prefix=certbot/ -u certbot/master
+  - cp ./Dockerfile certbot/Dockerfile
 
 install:
-  - docker build --rm --no-cache -t bcecchinato/certbot-rpi .
+  - docker build --rm --no-cache -t bcecchinato/certbot-rpi certbot/
   - docker push bcecchinato/certbot-rpi
 
 script: true

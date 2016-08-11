@@ -20,8 +20,9 @@ WORKDIR /opt/certbot
 # If <dest> doesn't exist, it is created along with all missing
 # directories in its path.
 
+ENV DEBIAN_FRONTEND=noninteractive
 
-COPY certbot/letsencrypt-auto-source/letsencrypt-auto /opt/certbot/src/letsencrypt-auto-source/letsencrypt-auto
+COPY letsencrypt-auto-source/letsencrypt-auto /opt/certbot/src/letsencrypt-auto-source/letsencrypt-auto
 RUN /opt/certbot/src/letsencrypt-auto-source/letsencrypt-auto --os-packages-only && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* \
@@ -32,7 +33,7 @@ RUN /opt/certbot/src/letsencrypt-auto-source/letsencrypt-auto --os-packages-only
 # Dockerfile we make sure we cache as much as possible
 
 
-COPY certbot/setup.py certbot/README.rst certbot/CHANGES.rst certbot/MANIFEST.in certbot/letsencrypt-auto-source/pieces/pipstrap.py /opt/certbot/src/
+COPY setup.py README.rst CHANGES.rst MANIFEST.in letsencrypt-auto-source/pieces/pipstrap.py /opt/certbot/src/
 
 # all above files are necessary for setup.py and venv setup, however,
 # package source code directory has to be copied separately to a
@@ -43,10 +44,10 @@ COPY certbot/setup.py certbot/README.rst certbot/CHANGES.rst certbot/MANIFEST.in
 # copied, just its contents." Order again matters, three files are far
 # more likely to be cached than the whole project directory
 
-COPY certbot/certbot /opt/certbot/src/certbot/
-COPY certbot/acme /opt/certbot/src/acme/
-COPY certbot/certbot-apache /opt/certbot/src/certbot-apache/
-COPY certbot/certbot-nginx /opt/certbot/src/certbot-nginx/
+COPY certbot /opt/certbot/src/certbot/
+COPY acme /opt/certbot/src/acme/
+COPY certbot-apache /opt/certbot/src/certbot-apache/
+COPY certbot-nginx /opt/certbot/src/certbot-nginx/
 
 
 RUN virtualenv --no-site-packages -p python2 /opt/certbot/venv
