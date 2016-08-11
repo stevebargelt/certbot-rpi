@@ -1,4 +1,4 @@
-# https://github.com/letsencrypt/letsencrypt/pull/431#issuecomment-103659297
+# https://github.com/certbot/certbot/pull/431#issuecomment-103659297
 # it is more likely developers will already have ubuntu:trusty rather
 # than e.g. debian:jessie and image size differences are negligible
 FROM resin/rpi-raspbian:jessie
@@ -21,7 +21,7 @@ WORKDIR /opt/certbot
 # directories in its path.
 
 
-COPY letsencrypt/letsencrypt-auto-source/letsencrypt-auto /opt/certbot/src/letsencrypt-auto-source/letsencrypt-auto
+COPY certbot/letsencrypt-auto-source/letsencrypt-auto /opt/certbot/src/letsencrypt-auto-source/letsencrypt-auto
 RUN /opt/certbot/src/letsencrypt-auto-source/letsencrypt-auto --os-packages-only && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* \
@@ -32,7 +32,7 @@ RUN /opt/certbot/src/letsencrypt-auto-source/letsencrypt-auto --os-packages-only
 # Dockerfile we make sure we cache as much as possible
 
 
-COPY letsencrypt/setup.py letsencrypt/README.rst letsencrypt/CHANGES.rst letsencrypt/MANIFEST.in letsencrypt/letsencrypt-auto-source/pieces/pipstrap.py /opt/certbot/src/
+COPY certbot/setup.py certbot/README.rst certbot/CHANGES.rst certbot/MANIFEST.in certbot/letsencrypt-auto-source/pieces/pipstrap.py /opt/certbot/src/
 
 # all above files are necessary for setup.py and venv setup, however,
 # package source code directory has to be copied separately to a
@@ -43,10 +43,10 @@ COPY letsencrypt/setup.py letsencrypt/README.rst letsencrypt/CHANGES.rst letsenc
 # copied, just its contents." Order again matters, three files are far
 # more likely to be cached than the whole project directory
 
-COPY letsencrypt/certbot /opt/certbot/src/certbot/
-COPY letsencrypt/acme /opt/certbot/src/acme/
-COPY letsencrypt/certbot-apache /opt/certbot/src/certbot-apache/
-COPY letsencrypt/certbot-nginx /opt/certbot/src/certbot-nginx/
+COPY certbot/certbot /opt/certbot/src/certbot/
+COPY certbot/acme /opt/certbot/src/acme/
+COPY certbot/certbot-apache /opt/certbot/src/certbot-apache/
+COPY certbot/certbot-nginx /opt/certbot/src/certbot-nginx/
 
 
 RUN virtualenv --no-site-packages -p python2 /opt/certbot/venv

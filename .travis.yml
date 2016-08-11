@@ -7,9 +7,9 @@ services:
 before_install:
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker run --rm --privileged multiarch/qemu-user-static:register
-  - git remote add letsencrypt https://github.com/letsencrypt/letsencrypt
-  - git fetch letsencrypt master
-  - git read-tree --prefix=letsencrypt/ -u letsencrypt/master
+  - git remote add certbot https://github.com/certbot/certbot
+  - git fetch certbot master
+  - git read-tree --prefix=certbot/ -u certbot/master
 
 install:
   - docker build --rm --no-cache -t bcecchinato/certbot-rpi .
