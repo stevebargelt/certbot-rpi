@@ -15,5 +15,7 @@ before_install:
 install:
   - docker build --rm --no-cache -t bcecchinato/certbot-rpi certbot/
   - docker push bcecchinato/certbot-rpi
+  - docker tag bcecchinato/certbot-rpi bcecchinato/letsencrypt-rpi
+  - docker push bcecchinato/letsencrypt-rpi
 
 script: true
