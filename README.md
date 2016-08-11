@@ -1,4 +1,4 @@
-# letsencrypt-rpi - ![master](https://secure.travis-ci.org/bcecchinato/letsencrypt-rpi.png?branch=master)
+# letsencrypt-rpi - ![master](https://secure.travis-ci.org/bcecchinato/certbot-rpi.png?branch=master)
 
 Raspberry Pi compatible Docker base image with [LetsEncrypt](https://letsencrypt.org/).  
 
@@ -34,7 +34,7 @@ docker run -it --rm bcecchinato/certbot-rpi --help
 
 This is only a wrapper for the official client, built on a Raspberry Pi using [Hypriot](http://blog.hypriot.com/). The image is rebuilt every night.
 
-The full details for the client commands are available on [LetsEncrypt GitHub project](https://github.com/letsencrypt/letsencrypt).
+The full details for the client commands are available on [Certbot GitHub project](https://github.com/certbot/certbot).
 
 ## License
 
