@@ -1,4 +1,4 @@
-# letsencrypt-rpi - ![master](https://secure.travis-ci.org/bcecchinato/certbot-rpi.png?branch=master)
+# certbot-rpi - ![master](https://secure.travis-ci.org/bcecchinato/certbot-rpi.png?branch=master)
 
 Raspberry Pi compatible Docker base image with [LetsEncrypt](https://letsencrypt.org/).  
 
