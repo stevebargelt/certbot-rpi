@@ -7,9 +7,6 @@ services:
 before_install:
   - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker run --rm --privileged multiarch/qemu-user-static:register
-  - git remote add certbot https://github.com/certbot/certbot
-  - git fetch certbot master
-  - git read-tree --prefix=certbot/ -u certbot/master
   - cp ./Dockerfile certbot/Dockerfile
 
 install:
