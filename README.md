@@ -36,8 +36,9 @@ To get a new certificate:
 
 ```bash
 docker run -it --rm -p 443:443 --name certbot \
-  -v /etc/letsencrypt:/etc/letsencrypt          \
-  stevebargelt/letsencrypt-rpi certonly --standalone -d your.domain.com
+  -v /etc/letsencrypt:/etc/letsencrypt \
+  stevebargelt/letsencrypt-rpi certonly --standalone \
+  -d your.domain.com
 ```
 
 This is only a wrapper for the official client, built on a Raspberry Pi using [Hypriot](http://blog.hypriot.com/). The image is rebuilt every night.
