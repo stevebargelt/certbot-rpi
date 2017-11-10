@@ -2,8 +2,10 @@
 
 Raspberry Pi compatible Docker base image with [LetsEncrypt](https://letsencrypt.org/).
 
-As you can see above this was forked from [bcecchinato/certbot-rpi](bcecchinato/certbot-rpi) - I really appreciate all of bcecchinato's work but I ran into an issue one night where I desperately needed to update my certificate on my home automation Raspberry Pi. I ran my normal docker command pulling bcecchinato's image and boom - a bug with the version of certbot that was pulled in as a submodule. Well after a bit of hair pulling I decided to fork and update the project myself. Then I decided to update the .travis.yml to grab/update the certbot submodule on every build. Pro: this image will always have the latest certbot bug fixes. Con: This image could introduce bugs from certbot master. 
+As you can see above this was forked from [bcecchinato/certbot-rpi](bcecchinato/certbot-rpi) - I really appreciate all of bcecchinato's work but I ran into an issue one night where I desperately needed to update my certificate on my home automation Raspberry Pi. I ran my normal docker command pulling bcecchinato's image and boom - a bug with the version of certbot that was pulled in as a submodule. Well after a bit of hair pulling I decided to fork and update the project myself. Then I decided to update the .travis.yml to grab/update the certbot submodule on every build.
 
+* Pro: this image will always have the latest certbot bug fixes.
+* Con: This image could introduce bugs from certbot master.
 
 ## What is LetsEncrypt?
 
@@ -28,12 +30,15 @@ Run all the commands from within the project root directory.
 docker pull stevebargelt/certbot-rpi
 ```
 
-### Run the Docker Image and get the version of the installed LetsEncrypt client
-```bash
-docker run -it --rm stevebargelt/certbot-rpi --help
-```
-
 ## How to use this image
+
+To get a new certificate:
+
+```bash
+docker run -it --rm -p 443:443 --name certbot \
+  -v /etc/letsencrypt:/etc/letsencrypt          \
+  stevebargelt/letsencrypt-rpi certonly --standalone -d your.domain.com
+```
 
 This is only a wrapper for the official client, built on a Raspberry Pi using [Hypriot](http://blog.hypriot.com/). The image is rebuilt every night.
 
