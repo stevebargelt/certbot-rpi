@@ -1,6 +1,8 @@
-# certbot-rpi - [![Build Status](https://travis-ci.org/stevebargelt/certbot-rpi.svg?branch=master)](https://travis-ci.org/stevebargelt/certbot-rpi)
+# certbot-rpi - [![Build Status](https://travis-ci.org/stevebargelt/certbot-rpi.svg?branch=master)](https://travis-ci.org/stevebargelt/certbot-rpi) [![Pulls](https://img.shields.io/docker/pulls/stevebargelt/certbot-rpi.svg)](https://hub.docker.com/r/stevebargelt/certbot-rpi/)
 
-Raspberry Pi compatible Docker base image with [LetsEncrypt](https://letsencrypt.org/).
+[@stevebargelt](http://www.twitter.com/stevebargelt)
+
+Raspberry Pi (2 and 3 **not** 1, Zero, or Zero W) compatible Docker base image with [LetsEncrypt](https://letsencrypt.org/).
 
 As you can see above this was forked from [bcecchinato/certbot-rpi](bcecchinato/certbot-rpi) - I really appreciate all of bcecchinato's work but I ran into an issue one night where I desperately needed to update my certificate on my home automation Raspberry Pi. I ran my normal docker command pulling bcecchinato's image and boom - a bug with the version of certbot that was pulled in as a submodule. Well after a bit of hair pulling I decided to fork and update the project myself. Then I decided to update the .travis.yml to grab/update the certbot submodule on every build.
 
