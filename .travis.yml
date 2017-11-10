@@ -1,25 +1,22 @@
 language: python
 sudo: required
-
 services:
-  - docker
-
+- docker
 before_install:
-  - git submodule update --init --recursive
-  - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  - docker run --rm --privileged multiarch/qemu-user-static:register
-  - cp ./Dockerfile certbot/Dockerfile
-
+- git submodule update --init --recursive
+- docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+- docker run --rm --privileged multiarch/qemu-user-static:register
+- cp ./Dockerfile certbot/Dockerfile
 install:
-  - docker build --rm --no-cache -t stevebargelt/certbot-rpi certbot/
-  - docker push stevebargelt/certbot-rpi
-  - docker tag stevebargelt/certbot-rpi stevebargelt/letsencrypt-rpi
-  - docker push stevebargelt/letsencrypt-rpi
-
+- docker build --rm --no-cache -t stevebargelt/certbot-rpi certbot/
+- docker push stevebargelt/certbot-rpi
+- docker tag stevebargelt/certbot-rpi stevebargelt/letsencrypt-rpi
+- docker push stevebargelt/letsencrypt-rpi
 script: true
 notifications:
   slack:
     rooms:
-      - secure: "BDGRufEGI9XBbmZJX7y10YfJGmz1J1zgxfmybO6/KLaqT2lCQ39Myp6PnmiuJQRFuIS0gndSy7L7MFaSRq+oe51r/M3ukUnKuIDFbU/gIXtYMqEx6KylJpo4o4DRJVfJRKXeifyj5JxabF82T4DDCIofprpq8xZH2zleGnUGJIZQQhyf0PD3L6E+bOPGBdMoIlVmC5fqr9aiOo4xfRSRLUmN+uJXRjj6Zf9O7DohxPYZqnxuK9Qzwtp5GMkmKZbv2omHreUKdVuXkJ0EuJ4+9+zzWVbMlk8Quk1LHC6wovvWm4lZoYmXG0AWuzu+cZIRSKe0oj49DVmH9f6BSkXb3wTwts47tXmTfQgTCT+/1Xf49F/B5bAnKQV3YX/hqdvqWN3oLtwz2MLJ98AsH4iP2AZrs7RK2VBlGrXJW8cPLL3xcPKUMh7t7kHkqXNkiQh4CJ06bGX50rIEMD741eUFmqF5BquEiSE5yrTHXmm+T3Ms9RH0j+YTDHs1msxDH0Urlju0OHbIKRKtWVQOv4beAoBxd56RoiVev+SbNh+Fj10cCuiGPnCHjxy8Wli0q1Y8XhSdOLa1JlrABfrnMfX9HG1RVG2J97F6Ii5ODudGKjqRBBbwwwRDFCHNL46bkC+wL52Y2/jMOJFpM4rlfgy+uLsyrlbhxoYlBXBJyizroAM="
+      secure: ROWB+22AhCBxMdL3RE9TOeZR9Y+iPGFvrqHkJsxANiGWre9M9txJZib5RBLF2zfEn5Is6BeW5Sq4Q+Lsmo7xIMuILXammmI02plTjvJpxafU6L4N4tBYhS/kucHkPEDe0JmAme/Ed69mFtaqSxZyMX63QPwX0dyozVKRFhcKA5tQdsaZn5e3yiK4H/7v0ZT9gcyx4qtL/Y55kkpNfJOv8bSz1Jn0lmE85Qr36uS4aTRTnlGS1jRmmB37Wo2jIR5+5wHUFenlkC1gwbZtFHUgHuzfPerG1GTeHpzt0MlF2VZGL8JV9G0L1kP0mbuhYLHIJ7Ad3r3t/swoc6Q7FIh7LvDwCHn0HLxegnAlRMMWaYb+4guoyw1xanQ6eCThrr3VUXWtQUMKhFlUyts4EkOM0u6yj6x7zcR2wdQ4Yw6Ye63ZIdxfiEX5QTRGJVfp/AKG5EldZsaLp8q8cUZlx/ZUwI1eB92KelZrRolp2EnrBqU8tLqLv+FluuWkm2O99eFwmtEfV+G7KwvRx9+/lQbeYoJim/2sD2jg5zOe3fWwE5FgRsuzMnT3RUtnhpw74S7TJvCtplOF2xi1Uo/3sP0AgjRdSlqp6cuTUUVHuUBAAwy/DfTSW0YLElGWmsK/vV342N8ng7mKO+BVA5aTOAvmVDOaAZrEftcCEEGHx8p6xfE=
     template:
-      - "Status=%{result}, Job=%{repository_name}, Build=%{build_number}, URL=%{build_url}, HUB=https://hub.docker.com/r/stevebargelt/certbot-rpi/"
+    - Status=%{result}, Job=%{repository_name}, Build=%{build_number}, URL=%{build_url},
+      HUB=https://hub.docker.com/r/stevebargelt/certbot-rpi/
